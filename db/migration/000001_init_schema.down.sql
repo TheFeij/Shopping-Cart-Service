@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS shopping_carts;
-DROP TYPE shopping_cart_state;
+DROP TABLE IF EXISTS baskets;
+DROP TYPE BASKET_STATE;

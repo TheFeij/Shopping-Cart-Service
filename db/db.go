@@ -18,7 +18,7 @@ func Init() {
 		return
 	}
 
-	if err := db.AutoMigrate(&models.ShoppingCart{}); err != nil {
+	if err := db.AutoMigrate(&models.Baskets{}); err != nil {
 		log.Fatalln(err)
 		return
 	}
