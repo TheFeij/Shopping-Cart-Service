@@ -1,6 +1,7 @@
 package db
 
 import (
+	"Shoping-Cart-Service/db/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -14,9 +15,13 @@ func Init() {
 
 	if err != nil {
 		log.Fatalln(err)
+		return
 	}
 
-	//TODO: migration of the db models
+	if err := db.AutoMigrate(&models.ShoppingCart{}); err != nil {
+		log.Fatalln(err)
+		return
+	}
 
 	DB = db
 }
