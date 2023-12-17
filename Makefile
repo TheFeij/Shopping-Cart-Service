@@ -7,5 +7,12 @@ createdb:
 dropdb:
 	docker exec -it postgres-container dropdb shoping_cart_db
 
+migrateup:
+	 migrate -path ./db/migration -database "postgres://root:1234@localhost:5432/shoping_cart_db?sslmode=disable" -verbose up
+
+migratedown:
+	 migrate -path ./db/migration -database "postgres://root:1234@localhost:5432/shoping_cart_db?sslmode=disable" -verbose down
+
+
 
 .PHONY: postgres, createdb, dropdb
