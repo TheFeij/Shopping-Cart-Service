@@ -11,10 +11,10 @@ const (
 	PENDING   State = "PENDING"
 )
 
-type Baskets struct {
-	ID        uint `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Data      string `gorm:"type:varchar;size:2048;not null"`
-	State     State  `gorm:"type:basket_state;not null"`
+type Basket struct {
+	ID        uint      `gorm:"primarykey"`
+	CreatedAt time.Time `gorm:"not null"`
+	UpdatedAt time.Time `gorm:"not null"`
+	Data      []byte    `gorm:"type:jsonb"`
+	State     State     `gorm:"not null"`
 }
