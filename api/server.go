@@ -23,7 +23,7 @@ func NewServer(db *gorm.DB) *Server {
 	})
 
 	handler := handlers.NewBasketsHandler(server.db)
-	server.router.GET("/baskets", handler.GetBasketsList)
+	server.router.GET("/basket", handler.GetBasketsList)
 	server.router.GET("/basket/:id", handler.GetBasket)
 	server.router.POST("/basket", handler.CreateNewBasket)
 	server.router.PATCH("/basket/:id", handler.UpdateBasket)
