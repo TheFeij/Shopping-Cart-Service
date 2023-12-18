@@ -19,4 +19,16 @@ func main() {
 			log.Fatalln(err)
 		}
 	}(DB)
+
+	//// sample data
+	//basket := models.Basket{
+	//	Data:  []byte(`{"name": "John Doe", "email": "johndoe@example.com"}`),
+	//	State: models.COMPLETED,
+	//}
+	//db.Create(&basket)
+
+	////retrieving sample data
+	//var basket models.Basket
+	//db.First(&basket, 1)
+	//fmt.Println(string(basket.Data))
 }
