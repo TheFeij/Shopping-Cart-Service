@@ -3,6 +3,8 @@ package handlers
 import (
 	"Shoping-Cart-Service/db/models"
 	"Shoping-Cart-Service/requests"
+	"Shoping-Cart-Service/responses"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -38,6 +40,34 @@ func (handler BasketsHandler) CreateNewBasket(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, newBasket)
+}
+
+func (handler BasketsHandler) GetBasketsList(context *gin.Context) {
+	var baskets []models.Basket
+
+	if err := handler.db.Find(&baskets).Error; err != nil {
+		context.JSON(http.StatusInternalServerError, errResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.GetBasketsListResponse{Baskets: baskets})
+}
+
+func (handler BasketsHandler) GetBasket(context *gin.Context) {
+	var basket models.Basket
+	id := context.Param("id")
+
+	if err := handler.db.First(&basket, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			context.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
+			return
+		}
+
+		context.JSON(http.StatusInternalServerError, errResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.GetBasketResponse{Basket: basket})
 }
 
 func errResponse(err error) gin.H {
