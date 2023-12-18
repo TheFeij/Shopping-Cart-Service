@@ -12,9 +12,9 @@ const (
 )
 
 type Basket struct {
-	ID        uint      `gorm:"primarykey"`
-	CreatedAt time.Time `gorm:"not null"`
-	UpdatedAt time.Time `gorm:"not null"`
-	Data      []byte    `gorm:"type:jsonb"`
-	State     State     `gorm:"not null"`
+	ID        uint      `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time `gorm:"not null" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"not null" json:"updatedAt"`
+	Data      []byte    `gorm:"type:jsonb" json:"data"`
+	State     State     `gorm:"not null" json:"state"`
 }
