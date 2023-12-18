@@ -59,7 +59,7 @@ func (handler BasketsHandler) GetBasket(context *gin.Context) {
 
 	if err := handler.db.First(&basket, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			context.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
+			context.JSON(http.StatusNotFound, errResponse(err))
 			return
 		}
 
@@ -68,6 +68,23 @@ func (handler BasketsHandler) GetBasket(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, responses.GetBasketResponse{Basket: basket})
+}
+
+func (handler BasketsHandler) DeleteBasket(context *gin.Context) {
+	var basket models.Basket
+	id := context.Param("id")
+
+	if err := handler.db.Delete(&basket, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			context.JSON(http.StatusNotFound, errResponse(err))
+			return
+		}
+
+		context.JSON(http.StatusInternalServerError, errResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, basket)
 }
 
 func errResponse(err error) gin.H {
