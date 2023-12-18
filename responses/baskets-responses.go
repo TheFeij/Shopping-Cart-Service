@@ -6,7 +6,7 @@ import (
 )
 
 type GetBasketsListResponse struct {
-	Baskets []models.Basket `json:"baskets"`
+	Baskets []GetBasketResponse `json:"baskets"`
 }
 
 type GetBasketResponse struct {
