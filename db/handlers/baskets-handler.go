@@ -59,7 +59,7 @@ func (handler BasketsHandler) GetBasket(context *gin.Context) {
 
 	if err := handler.db.First(&basket, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			context.JSON(http.StatusNotFound, errResponse(err))
+			context.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
 			return
 		}
 
@@ -76,10 +76,41 @@ func (handler BasketsHandler) DeleteBasket(context *gin.Context) {
 
 	if err := handler.db.Delete(&basket, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			context.JSON(http.StatusNotFound, errResponse(err))
+			context.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
 			return
 		}
 
+		context.JSON(http.StatusInternalServerError, errResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, basket)
+}
+
+func (handler BasketsHandler) UpdateBasket(context *gin.Context) {
+	var basket models.Basket
+	id := context.Param("id")
+
+	if err := handler.db.First(&basket, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			context.JSON(http.StatusNotFound, gin.H{"error": "Basket not found"})
+			return
+		}
+
+		context.JSON(http.StatusInternalServerError, errResponse(err))
+		return
+	}
+
+	var req requests.PatchBasketRequest
+	if err := context.ShouldBindJSON(&req); err != nil {
+		context.JSON(http.StatusBadRequest, errResponse(err))
+		return
+	}
+
+	basket.Data = req.Data
+	basket.State = models.State(req.State)
+
+	if err := handler.db.Save(&basket).Error; err != nil {
 		context.JSON(http.StatusInternalServerError, errResponse(err))
 		return
 	}
