@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Shoping-Cart-Service/api"
 	"Shoping-Cart-Service/db"
 	"database/sql"
 	"log"
@@ -20,15 +21,10 @@ func main() {
 		}
 	}(DB)
 
-	//// sample data
-	//basket := models.Basket{
-	//	Data:  []byte(`{"name": "John Doe", "email": "johndoe@example.com"}`),
-	//	State: models.COMPLETED,
-	//}
-	//db.Create(&basket)
-
-	////retrieving sample data
-	//var basket models.Basket
-	//db.First(&basket, 1)
-	//fmt.Println(string(basket.Data))
+	server := api.NewServer(db)
+	err = server.Start("localhost:8080")
+	if err != nil {
+		log.Fatalln("Cannot start the server ", err.Error())
+		return
+	}
 }
